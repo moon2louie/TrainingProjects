@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leading Change in the Age of AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            overflow: hidden;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide {
+            width: 90%;
+            max-width: 1000px;
+            height: 80%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+
+        h3 {
+            font-size: 2rem;
+            margin-bottom: 25px;
+            color: #4ecdc4;
+        }
+
+        .content {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .bullet-point {
+            margin: 15px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .bullet-point::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #4ecdc4;
+            font-weight: bold;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 1rem;
+        }
+
+        .highlight {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        .icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .framework {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .framework-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .framework-item h4 {
+            color: #4ecdc4;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <div class="icon">🚀</div>
+            <h1>Leading Change in the Age of AI</h1>
+            <div class="content">
+                <p style="text-align: center; font-size: 1.5rem; margin-top: 30px;">
+                    Navigating Digital Transformation with Strategic Change Management
+                </p>
+                <p style="text-align: center; font-size: 1.1rem; margin-top: 20px; opacity: 0.8;">
+                    A comprehensive approach to managing AI-driven organizational change
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 2: The Challenge -->
+        <div class="slide">
+            <div class="icon">⚡</div>
+            <h2>The AI Change Challenge</h2>
+            <div class="content">
+                <div class="bullet-point">AI implementations fail <span class="highlight">70% of the time</span> due to poor change management</div>
+                <div class="bullet-point">Employees resist AI adoption due to <span class="highlight">fear and uncertainty</span></div>
+                <div class="bullet-point">Technical success ≠ Business value without <span class="highlight">human acceptance</span></div>
+                <div class="bullet-point">Traditional change models need <span class="highlight">AI-specific adaptations</span></div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Key Principles -->
+        <div class="slide">
+            <div class="icon">🎯</div>
+            <h2>Leading Change Principles</h2>
+            <div class="content">
+                <div class="bullet-point"><span class="highlight">Human-Centered Design:</span> Put people at the center of AI transformation</div>
+                <div class="bullet-point"><span class="highlight">Transparent Communication:</span> Address AI fears with clear, honest messaging</div>
+                <div class="bullet-point"><span class="highlight">Continuous Learning:</span> Build AI literacy across all organizational levels</div>
+                <div class="bullet-point"><span class="highlight">Iterative Implementation:</span> Phase AI rollouts with feedback loops</div>
+                <div class="bullet-point"><span class="highlight">Cultural Evolution:</span> Foster AI-ready organizational mindsets</div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Framework -->
+        <div class="slide">
+            <div class="icon">🏗️</div>
+            <h2>AI Change Management Framework</h2>
+            <div class="framework">
+                <div class="framework-item">
+                    <h4>Prepare</h4>
+                    <p>• AI readiness assessment<br>• Stakeholder mapping<br>• Vision alignment</p>
+                </div>
+                <div class="framework-item">
+                    <h4>Enable</h4>
+                    <p>• Skills development<br>• Communication strategy<br>• Support systems</p>
+                </div>
+                <div class="framework-item">
+                    <h4>Sustain</h4>
+                    <p>• Continuous monitoring<br>• Feedback integration<br>• Culture reinforcement</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Success Strategies -->
+        <div class="slide">
+            <div class="icon">💡</div>
+            <h2>Strategies for Success</h2>
+            <div class="content">
+                <div class="bullet-point"><span class="highlight">Start Small:</span> Pilot AI in low-risk, high-visibility areas</div>
+                <div class="bullet-point"><span class="highlight">Champion Network:</span> Identify and empower AI advocates</div>
+                <div class="bullet-point"><span class="highlight">Skills Investment:</span> Provide comprehensive AI training programs</div>
+                <div class="bullet-point"><span class="highlight">Quick Wins:</span> Demonstrate early value to build momentum</div>
+                <div class="bullet-point"><span class="highlight">Feedback Loops:</span> Create channels for continuous improvement</div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Conclusion -->
+        <div class="slide">
+            <div class="icon">🌟</div>
+            <h2>The Future Leader's Mandate</h2>
+            <div class="content">
+                <p style="text-align: center; font-size: 1.4rem; margin-bottom: 30px;">
+                    Success in the AI age requires leaders who can bridge technology and humanity
+                </p>
+                <div class="bullet-point">Embrace AI as a <span class="highlight">collaborative partner</span>, not a replacement</div>
+                <div class="bullet-point">Build <span class="highlight">change-resilient</span> organizations</div>
+                <div class="bullet-point">Foster continuous <span class="highlight">learning cultures</span></div>
+                <div class="bullet-point">Lead with <span class="highlight">empathy and vision</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-counter">
+        <span id="current-slide">1</span> / <span id="total-slides">6</span>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prev-btn" onclick="previousSlide()">← Previous</button>
+        <button class="nav-btn" id="next-btn" onclick="nextSlide()">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        document.getElementById('total-slides').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[n].classList.add('active');
+            
+            document.getElementById('current-slide').textContent = n + 1;
+            
+            // Update navigation buttons
+            document.getElementById('prev-btn').disabled = (n === 0);
+            document.getElementById('next-btn').disabled = (n === totalSlides - 1);
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                previousSlide();
+            }
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>
