@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Behavioral Diagram - Moodle LMS + .NET ERP Integration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .diagram-container {
+            padding: 40px;
+            background: #f8f9fa;
+        }
+
+        .tab-container {
+            display: flex;
+            margin-bottom: 30px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px 20px;
+            background: #ecf0f1;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #2c3e50;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .tab-content {
+            display: none;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Sequence Diagram Styles */
+        .sequence-diagram {
+            position: relative;
+            min-height: 600px;
+            padding: 20px;
+            border: 2px dashed #bdc3c7;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #fafbfc, #f4f6f8);
+        }
+
+        .actor {
+            position: absolute;
+            top: 20px;
+            width: 100px;
+            text-align: center;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .actor-box {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .lifeline {
+            position: absolute;
+            top: 80px;
+            width: 3px;
+            background: repeating-linear-gradient(
+                to bottom,
+                #3498db,
+                #3498db 10px,
+                transparent 10px,
+                transparent 20px
+            );
+            height: 500px;
+        }
+
+        .message {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            font-size: 0.9em;
+            color: #2c3e50;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 5px 10px;
+            border-radius: 15px;
+            border: 1px solid #bdc3c7;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            min-height: 30px;
+        }
+
+        .message::after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid #7f8c8d;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+        }
+
+        .return-message::after {
+            right: auto;
+            left: -10px;
+            border-left: none;
+            border-right: 10px solid #7f8c8d;
+        }
+
+        .activation {
+            position: absolute;
+            width: 12px;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            border-radius: 6px;
+        }
+
+        /* Activity Diagram Styles */
+        .activity-diagram {
+            position: relative;
+            min-height: 700px;
+            padding: 20px;
+            border: 2px dashed #bdc3c7;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #fafbfc, #f4f6f8);
+        }
+
+        .activity-node {
+            position: absolute;
+            background: white;
+            border: 3px solid #3498db;
+            border-radius: 25px;
+            padding: 15px 20px;
+            text-align: center;
+            font-weight: 600;
+            color: #2c3e50;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            min-width: 140px;
+        }
+
+        .activity-node:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .start-node {
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .end-node {
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .decision-node {
+            transform: rotate(45deg);
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .decision-text {
+            transform: rotate(-45deg);
+            font-size: 0.8em;
+        }
+
+        .activity-arrow {
+            position: absolute;
+            width: 3px;
+            background: #7f8c8d;
+        }
+
+        .activity-arrow::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 8px solid #7f8c8d;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+        }
+
+        .flow-label {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.8em;
+            color: #2c3e50;
+            border: 1px solid #bdc3c7;
+        }
+
+        /* State Diagram Styles */
+        .state-diagram {
+            position: relative;
+            min-height: 600px;
+            padding: 20px;
+            border: 2px dashed #bdc3c7;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #fafbfc, #f4f6f8);
+        }
+
+        .state {
+            position: absolute;
+            background: white;
+            border: 3px solid #9b59b6;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            font-weight: 600;
+            color: #2c3e50;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .state:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .state-title {
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            color: #8e44ad;
+        }
+
+        .state-actions {
+            font-size: 0.85em;
+            color: #7f8c8d;
+            font-weight: normal;
+        }
+
+        .transition {
+            position: absolute;
+            background: #7f8c8d;
+            height: 3px;
+        }
+
+        .transition::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: -5px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid #7f8c8d;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+        }
+
+        .legend {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 2px solid #ecf0f1;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .legend h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9em;
+            color: #2c3e50;
+        }
+
+        @media (max-width: 1200px) {
+            .tab-container {
+                flex-direction: column;
+            }
+            
+            .sequence-diagram, .activity-diagram, .state-diagram {
+                overflow-x: auto;
+                min-width: 1000px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔄 Behavioral Diagrams</h1>
+            <p>Dynamic Interactions in Moodle LMS + .NET ERP Integration</p>
+        </div>
+
+        <div class="diagram-container">
+            <div class="tab-container">
+                <button class="tab active" onclick="showTab('sequence')">Sequence Diagram</button>
+                <button class="tab" onclick="showTab('activity')">Activity Diagram</button>
+                <button class="tab" onclick="showTab('state')">State Diagram</button>
+            </div>
+
+            <!-- Sequence Diagram -->
+            <div id="sequence" class="tab-content active">
+                <h2>🔄 Sequence Diagram: Student Login & Course Access</h2>
+                <div class="sequence-diagram">
+                    <!-- Actors -->
+                    <div class="actor" style="left: 50px;">
+                        <div class="actor-box">Student</div>
+                        <div class="lifeline" style="left: 49px;"></div>
+                    </div>
+                    
+                    <div class="actor" style="left: 250px;">
+                        <div class="actor-box">Moodle LMS</div>
+                        <div class="lifeline" style="left: 249px;"></div>
+                    </div>
+                    
+                    <div class="actor" style="left: 450px;">
+                        <div class="actor-box">.NET Auth</div>
+                        <div class="lifeline" style="left: 449px;"></div>
+                    </div>
+                    
+                    <div class="actor" style="left: 650px;">
+                        <div class="actor-box">.NET ERP</div>
+                        <div class="lifeline" style="left: 649px;"></div>
+                    </div>
+                    
+                    <div class="actor" style="left: 850px;">
+                        <div class="actor-box">Database</div>
+                        <div class="lifeline" style="left: 849px;"></div>
+                    </div>
+
+                    <!-- Messages -->
+                    <div class="message" style="top: 120px; left: 60px; width: 180px;">
+                        1. Login Request
+                    </div>
+
+                    <div class="message" style="top: 160px; left: 260px; width: 180px;">
+                        2. Forward Auth
+                    </div>
+
+                    <div class="message" style="top: 200px; left: 460px; width: 180px;">
+                        3. Validate User
+                    </div>
+
+                    <div class="message return-message" style="top: 240px; left: 460px; width: 180px;">
+                        4. User Valid
+                    </div>
+
+                    <div class="message return-message" style="top: 280px; left: 260px; width: 180px;">
+                        5. Auth Token
+                    </div>
+
+                    <div class="message return-message" style="top: 320px; left: 60px; width: 180px;">
+                        6. Login Success
+                    </div>
+
+                    <div class="message" style="top: 360px; left: 60px; width: 180px;">
+                        7. Access Course
+                    </div>
+
+                    <div class="message" style="top: 400px; left: 260px; width: 380px;">
+                        8. Get Student Records
+                    </div>
+
+                    <div class="message return-message" style="top: 440px; left: 260px; width: 380px;">
+                        9. Student Data + Financial Info
+                    </div>
+
+                    <div class="message return-message" style="top: 480px; left: 60px; width: 180px;">
+                        10. Course + Finance View
+                    </div>
+
+                    <!-- Activation bars -->
+                    <div class="activation" style="left: 94px; top: 120px; height: 380px;"></div>
+                    <div class="activation" style="left: 294px; top: 160px; height: 340px;"></div>
+                    <div class="activation" style="left: 494px; top: 200px; height: 100px;"></div>
+                    <div class="activation" style="left: 694px; top: 400px; height: 60px;"></div>
+                </div>
+            </div>
+
+            <!-- Activity Diagram -->
+            <div id="activity" class="tab-content">
+                <h2>📋 Activity Diagram: Faculty Attendance Management</h2>
+                <div class="activity-diagram">
+                    <!-- Start -->
+                    <div class="activity-node start-node" style="top: 20px; left: 50px;">
+                        START
+                    </div>
+
+                    <!-- Activities -->
+                    <div class="activity-node" style="top: 120px; left: 20px;">
+                        Faculty Login
+                    </div>
+
+                    <div class="activity-node" style="top: 200px; left: 20px;">
+                        Select Course
+                    </div>
+
+                    <div class="activity-node" style="top: 280px; left: 20px;">
+                        View Class List
+                    </div>
+
+                    <div class="activity-node" style="top: 360px; left: 20px;">
+                        Mark Attendance
+                    </div>
+
+                    <!-- Decision -->
+                    <div class="activity-node decision-node" style="top: 440px; left: 50px;">
+                        <div class="decision-text">Submit?</div>
+                    </div>
+
+                    <!-- Parallel Activities -->
+                    <div class="activity-node" style="top: 540px; left: 200px;">
+                        Update Moodle
+                    </div>
+
+                    <div class="activity-node" style="top: 540px; left: 400px;">
+                        Sync with ERP
+                    </div>
+
+                    <div class="activity-node" style="top: 540px; left: 600px;">
+                        Generate Reports
+                    </div>
+
+                    <!-- Final activity -->
+                    <div class="activity-node" style="top: 620px; left: 350px;">
+                        Send Notifications
+                    </div>
+
+                    <!-- End -->
+                    <div class="activity-node end-node" style="top: 680px; left: 380px;">
+                        END
+                    </div>
+
+                    <!-- Flow arrows -->
+                    <div class="activity-arrow" style="top: 100px; left: 88px; height: 50px;"></div>
+                    <div class="activity-arrow" style="top: 180px; left: 88px; height: 50px;"></div>
+                    <div class="activity-arrow" style="top: 260px; left: 88px; height: 50px;"></div>
+                    <div class="activity-arrow" style="top: 340px; left: 88px; height: 50px;"></div>
+                    <div class="activity-arrow" style="top: 420px; left: 88px; height: 50px;"></div>
+
+                    <!-- Decision flows -->
+                    <div class="activity-arrow" style="top: 490px; left: 150px; height: 80px;"></div>
+                    <div class="activity-arrow" style="top: 490px; left: 350px; height: 80px;"></div>
+                    <div class="activity-arrow" style="top: 490px; left: 550px; height: 80px;"></div>
+
+                    <!-- Convergence -->
+                    <div class="activity-arrow" style="top: 600px; left: 250px; height: 50px;"></div>
+                    <div class="activity-arrow" style="top: 600px; left: 450px; height: 50px;"></div>
+                    <div class="activity-arrow" style="top: 600px; left: 650px; height: 50px;"></div>
+
+                    <div class="activity-arrow" style="top: 660px; left: 418px; height: 50px;"></div>
+
+                    <!-- Flow labels -->
+                    <div class="flow-label" style="top: 470px; left: 120px;">Yes</div>
+                    <div class="flow-label" style="top: 350px; left: 200px;">Edit</div>
+                </div>
+            </div>
+
+            <!-- State Diagram -->
+            <div id="state" class="tab-content">
+                <h2>🏛️ State Diagram: Student Registration & Enrollment</h2>
+                <div class="state-diagram">
+                    <!-- States -->
+                    <div class="state" style="top: 50px; left: 50px;">
+                        <div class="state-title">Unregistered</div>
+                        <div class="state-actions">Entry: New student<br>Do: Show registration form</div>
+                    </div>
+
+                    <div class="state" style="top: 50px; left: 350px;">
+                        <div class="state-title">Registration Pending</div>
+                        <div class="state-actions">Entry: Form submitted<br>Do: Validate documents</div>
+                    </div>
+
+                    <div class="state" style="top: 200px; left: 350px;">
+                        <div class="state-title">Registered</div>
+                        <div class="state-actions">Entry: Documents approved<br>Do: Create user account</div>
+                    </div>
+
+                    <div class="state" style="top: 350px; left: 350px;">
+                        <div class="state-title">Fee Pending</div>
+                        <div class="state-actions">Entry: Account created<br>Do: Generate fee invoice</div>
+                    </div>
+
+                    <div class="state" style="top: 350px; left: 650px;">
+                        <div class="state-title">Fee Paid</div>
+                        <div class="state-actions">Entry: Payment received<br>Do: Activate account</div>
+                    </div>
+
+                    <div class="state" style="top: 200px; left: 650px;">
+                        <div class="state-title">Enrolled</div>
+                        <div class="state-actions">Entry: Account active<br>Do: Access courses</div>
+                    </div>
+
+                    <div class="state" style="top: 50px; left: 650px;">
+                        <div class="state-title">Active Student</div>
+                        <div class="state-actions">Entry: Course access<br>Do: Learning activities</div>
+                    </div>
+
+                    <!-- Transitions -->
+                    <div class="transition" style="top: 98px; left: 190px; width: 140px;"></div>
+                    <div class="transition" style="top: 148px; left: 418px; width: 3px; height: 40px;"></div>
+                    <div class="transition" style="top: 298px; left: 418px; width: 3px; height: 40px;"></div>
+                    <div class="transition" style="top: 398px; left: 490px; width: 140px;"></div>
+                    <div class="transition" style="top: 348px; left: 718px; width: 3px; height: -40px;"></div>
+                    <div class="transition" style="top: 148px; left: 718px; width: 3px; height: 40px;"></div>
+
+                    <!-- Transition labels -->
+                    <div style="position: absolute; top: 80px; left: 220px; font-size: 0.8em; color: #7f8c8d; background: rgba(255,255,255,0.9); padding: 2px 6px; border-radius: 8px;">Submit Application</div>
+                    <div style="position: absolute; top: 165px; left: 430px; font-size: 0.8em; color: #7f8c8d; background: rgba(255,255,255,0.9); padding: 2px 6px; border-radius: 8px;">Approved</div>
+                    <div style="position: absolute; top: 315px; left: 430px; font-size: 0.8em; color: #7f8c8d; background: rgba(255,255,255,0.9); padding: 2px 6px; border-radius: 8px;">Account Created</div>
+                    <div style="position: absolute; top: 380px; left: 520px; font-size: 0.8em; color: #7f8c8d; background: rgba(255,255,255,0.9); padding: 2px 6px; border-radius: 8px;">Payment Made</div>
+                    <div style="position: absolute; top: 315px; left: 730px; font-size: 0.8em; color: #7f8c8d; background: rgba(255,255,255,0.9); padding: 2px 6px; border-radius: 8px; writing-mode: vertical-rl;">Enroll</div>
+                    <div style="position: absolute; top: 165px; left: 730px; font-size: 0.8em; color: #7f8c8d; background: rgba(255,255,255,0.9); padding: 2px 6px; border-radius: 8px; writing-mode: vertical-rl;">Activate</div>
+                </div>
+            </div>
+
+            <div class="legend">
+                <h3>📋 Behavioral Diagram Legend</h3>
+                <div class="legend-grid">
+                    <div class="legend-item">
+                        <div style="width: 20px; height: 15px; background: linear-gradient(135deg, #3498db, #2980b9); border-radius: 3px;"></div>
+                        <span>Actor/Participant</span>
+                    </div>
+                    <div class="legend-item">
+                        <div style="width: 20px; height: 15px; background: white; border: 2px solid #3498db; border-radius: 8px;"></div>
+                        <span>Activity/Process</span>
+                    </div>
+                    <div class="legend-item">
+                        <div style="width: 20px; height: 15px; background: linear-gradient(135deg, #2ecc71, #27ae60); border-radius: 50%;"></div>
+                        <span>Start Point</span>
+                    </div>
+                    <div class="legend-item">
+                        <div style="width: 20px; height: 15px; background: linear-gradient(135deg, #e74c3c, #c0392b); border-radius: 50%;"></div>
+                        <span>End Point</span>
+                    </div>
+                    <div class="legend-item">
+                        <div style="width: 20px; height: 15px; background: linear-gradient(135deg, #f39c12, #e67e22); transform: rotate(45deg);"></div>
+                        <span>Decision Point</span>
+                    </div>
+                    <div class="legend-item">
+                        <div style="width: 20px; height: 15px; background: white; border: 2px solid #9b59b6; border-radius: 3px;"></div>
+                        <span>System State</span>
+                    </div>
+                    <div class="legend-item">
+                        <div style="width: 20px; height: 3px; background: #7f8c8d; position: relative;">
+                            <div style="position: absolute; right: -5px; top: -3px; width: 0; height: 0; border-left: 8px solid #7f8c8d; border-top: 3px solid transparent; border-bottom: 3px solid transparent;"></div>
+                        </div>
+                        <span>Data Flow/Transition</span>
+                    </div>
+                    <div class="legend-item">
+                        <div style="width: 3px; height: 20px; background: repeating-linear-gradient(to bottom, #3498db, #3498db 5px, transparent 5px, transparent 10px);"></div>
+                        <span>Lifeline (Sequence)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        // Add interactive hover effects
+        document.addEventListener('DOMContentLoaded', function() {
+            const nodes = document.querySelectorAll('.activity-node, .state, .message');
+            
+            nodes.forEach(node => {
+                node.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.05)';
+                    this.style.zIndex = '10';
+                });
+                
+                node.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                    this.style.zIndex = '1';
+                });
+            });
+
+            // Add click interactions for detailed information
+            const activityNodes = document.querySelectorAll('.activity-node');
+            activityNodes.forEach(node => {
+                node.addEventListener('click', function() {
+                    const nodeName = this.textContent.trim();
+                    if (nodeName !== 'START' && nodeName !== 'END') {
+                        // Simple demonstration of interactive behavior
+                        this.style.background = 'linear-gradient(135deg, #3498db, #2980b9)';
+                        this.style.color = 'white';
+                        
+                        setTimeout(() => {
+                            this.style.background = 'white';
+                            this.style.color = '#2c3e50';
+                        }, 1000);
+                    }
+                });
+            });
+
+            // Add animation to sequence diagram messages
+            const messages = document.querySelectorAll('.message');
+            messages.forEach((message, index) => {
+                message.style.opacity = '0';
+                message.style.transform = 'translateX(-20px)';
+                
+                setTimeout(() => {
+                    message.style.transition = 'all 0.5s ease';
+                    message.style.opacity = '1';
+                    message.style.transform = 'translateX(0)';
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>
